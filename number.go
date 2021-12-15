@@ -9,12 +9,15 @@ package validation
 import (
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 const (
 	numberMinError     = "%v,ERROR_NUMBER_MIN_%v"
 	numberMaxError     = "%v,ERROR_NUMBER_MAX_%v"
 	numberBetweenError = "%v,ERROR_NUMBER_BETWEEN_%v_%v"
+	numberFormatError  = "%v,ERROR_NUMBER_FORMAT_%v"
 )
 
 func NumberMin(field string, value, min interface{}) error {
@@ -543,6 +546,34 @@ func NumberBetween(field string, value, min, max interface{}) error {
 		}
 	default:
 		panic("value must be a number")
+	}
+
+	return nil
+}
+
+func NumberFormat(field string, value float64, format string) error {
+	f := strings.Split(strings.TrimSpace(format), ",")
+
+	if len(f) != 2 {
+		panic("format must be in the form of m,n, where m and n are positive integers")
+	}
+
+	ndp, err := strconv.ParseInt(f[1], 10, 0)
+
+	if err != nil || ndp < 0 {
+		panic("format must be in the form of m,n, where m and n are positive integers")
+	}
+
+	v := strings.Split(strconv.FormatFloat(value, 'f', -1, 64), ".")
+
+	// eg. value = 1.000
+	if len(v) == 1 {
+		return nil
+	}
+
+	// eg. value = 1.234
+	if int64(len(v[1])) > ndp {
+		return errors.New(fmt.Sprintf(numberFormatError, field, format))
 	}
 
 	return nil
