@@ -14,6 +14,7 @@ const (
 	stringOnlyASCIIError        = "%v,ERROR_STRING_ONLY_ASCII"
 	stringOnlyAlphanumericError = "%v,ERROR_STRING_ONLY_ALPHANUMERIC"
 	stringOnlyNumericError      = "%v,ERROR_STRING_ONLY_NUMERIC"
+	stringInError               = "%v,ERROR_STRING_IN"
 )
 
 func StringLen(field, value string, length int) error {
@@ -76,4 +77,24 @@ func StringOnlyNumeric(field, value string) error {
 	}
 
 	return nil
+}
+
+func StringIn(field, value string, values []string) error {
+	for _, v := range values {
+		if v == value {
+			return nil
+		}
+	}
+
+	return errors.New(fmt.Sprintf(stringInError, field))
+}
+
+func StringInIgnoreCase(field, value string, values []string) error {
+	for _, v := range values {
+		if strings.ToLower(v) == strings.ToLower(value) {
+			return nil
+		}
+	}
+
+	return errors.New(fmt.Sprintf(stringInError, field))
 }
