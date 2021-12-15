@@ -20,6 +20,8 @@ const (
 	numberFormatError  = "%v,ERROR_NUMBER_FORMAT_%v"
 )
 
+// NumberMin returns error if value<min. NumberMin panics if value and min have
+// different types.
 func NumberMin(field string, value, min interface{}) error {
 	switch value.(type) {
 	case int:
@@ -173,6 +175,8 @@ func NumberMin(field string, value, min interface{}) error {
 	return nil
 }
 
+// NumberMax returns error if value>max. NumberMax panics if value and max have
+// different types.
 func NumberMax(field string, value, max interface{}) error {
 	switch value.(type) {
 	case int:
@@ -326,6 +330,8 @@ func NumberMax(field string, value, max interface{}) error {
 	return nil
 }
 
+// NumberBetween returns error if value<min or value>max. NumberBetween panics
+// if value, min, and max have different types.
 func NumberBetween(field string, value, min, max interface{}) error {
 	switch value.(type) {
 	case int:
