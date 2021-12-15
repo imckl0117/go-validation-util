@@ -7,7 +7,7 @@ min/max length, etc.
 
 ## TODO
 
-- [ ] Implement checking of `m` in `format` (`m,n`) of `NumberFormat(field string, value float64, format string)`
+- [X] Implement checking of `m` in `format` (`m,n`) of `NumberFormat(field string, value float64, format string)`
 - [ ] Unit tests
 - [ ] Implement validation with struct tags
 

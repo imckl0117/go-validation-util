@@ -558,21 +558,33 @@ func NumberFormat(field string, value float64, format string) error {
 		panic("format must be in the form of m,n, where m and n are positive integers")
 	}
 
+	nd, err := strconv.ParseInt(f[0], 10, 0)
+
+	if err != nil || nd < 0 {
+		panic("format must be in the form of m,n, where m and n are positive integers")
+	}
+
 	ndp, err := strconv.ParseInt(f[1], 10, 0)
 
 	if err != nil || ndp < 0 {
 		panic("format must be in the form of m,n, where m and n are positive integers")
 	}
 
-	v := strings.Split(strconv.FormatFloat(value, 'f', -1, 64), ".")
+	v := strconv.FormatFloat(value, 'f', -1, 64)
+
+	if int64(len(v)-1) > nd {
+		return errors.New(fmt.Sprintf(numberFormatError, field, format))
+	}
+
+	vs := strings.Split(v, ".")
 
 	// eg. value = 1.000
-	if len(v) == 1 {
+	if len(vs) == 1 {
 		return nil
 	}
 
 	// eg. value = 1.234
-	if int64(len(v[1])) > ndp {
+	if int64(len(vs[1])) > ndp {
 		return errors.New(fmt.Sprintf(numberFormatError, field, format))
 	}
 
