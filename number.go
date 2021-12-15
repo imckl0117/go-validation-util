@@ -551,6 +551,8 @@ func NumberBetween(field string, value, min, max interface{}) error {
 	return nil
 }
 
+// NumberFormat checks if value has l decimal places, where m<=l<=n, m,n from
+// format.
 func NumberFormat(field string, value float64, format string) error {
 	f := strings.Split(strings.TrimSpace(format), ",")
 
@@ -558,33 +560,34 @@ func NumberFormat(field string, value float64, format string) error {
 		panic("format must be in the form of m,n, where m and n are positive integers")
 	}
 
-	nd, err := strconv.ParseInt(f[0], 10, 0)
+	m, err := strconv.ParseInt(f[0], 10, 0)
 
-	if err != nil || nd < 0 {
+	if err != nil || m < 0 {
 		panic("format must be in the form of m,n, where m and n are positive integers")
 	}
 
-	ndp, err := strconv.ParseInt(f[1], 10, 0)
+	n, err := strconv.ParseInt(f[1], 10, 0)
 
-	if err != nil || ndp < 0 {
+	if err != nil || n < 0 {
 		panic("format must be in the form of m,n, where m and n are positive integers")
 	}
 
 	v := strconv.FormatFloat(value, 'f', -1, 64)
 
-	if int64(len(v)-1) > nd {
-		return errors.New(fmt.Sprintf(numberFormatError, field, format))
-	}
-
 	vs := strings.Split(v, ".")
 
 	// eg. value = 1.000
 	if len(vs) == 1 {
-		return nil
+		if m == 0 {
+			return nil
+		}
+
+		return errors.New(fmt.Sprintf(numberFormatError, field, format))
 	}
 
-	// eg. value = 1.234
-	if int64(len(vs[1])) > ndp {
+	l := int64(len(vs[1]))
+
+	if l < m || l > n {
 		return errors.New(fmt.Sprintf(numberFormatError, field, format))
 	}
 
