@@ -16,6 +16,7 @@ const (
 	stringOnlyAlphanumericError = "%v,ERROR_STRING_ONLY_ALPHANUMERIC"
 	stringOnlyNumericError      = "%v,ERROR_STRING_ONLY_NUMERIC"
 	stringInError               = "%v,ERROR_STRING_IN"
+	stringNoDuplicateError      = "%v,ERROR_STRING_NO_DUPLICATE"
 )
 
 // StringLen returns error if len(value)!=length, otherwise nil.
@@ -112,4 +113,38 @@ func StringInIgnoreCase(field, value string, values []string) error {
 	}
 
 	return errors.New(fmt.Sprintf(stringInError, field))
+}
+
+// StringNoDuplicate returns error if values contain duplicated value,
+// otherwise nil. Comparison is done case-sensitively.
+func StringNoDuplicate(field string, values []string) error {
+	m := make(map[string]struct{})
+
+	for _, v := range values {
+		if _, ok := m[v]; ok {
+			return errors.New(fmt.Sprintf(stringNoDuplicateError, field))
+		}
+
+		m[v] = struct{}{}
+	}
+
+	return nil
+}
+
+// StringNoDuplicateIgnoreCase returns error if values contain duplicated
+// value, otherwise nil. Comparison is done case-insensitively.
+func StringNoDuplicateIgnoreCase(field string, values []string) error {
+	m := make(map[string]struct{})
+
+	for _, v := range values {
+		w := strings.ToLower(v)
+
+		if _, ok := m[w]; ok {
+			return errors.New(fmt.Sprintf(stringNoDuplicateError, field))
+		}
+
+		m[w] = struct{}{}
+	}
+
+	return nil
 }
