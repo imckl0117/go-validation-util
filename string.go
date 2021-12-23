@@ -1,46 +1,70 @@
 package validation
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 	"unicode"
 )
 
 const (
-	stringLenError              = "%v,ERROR_STRING_LENGTH_%v"
-	stringLenMinError           = "%v,ERROR_STRING_LENGTH_MIN_%v"
-	stringLenMaxError           = "%v,ERROR_STRING_LENGTH_MAX_%v"
-	stringLenBetweenError       = "%v,ERROR_STRING_LENGTH_BETWEEN_%v_%v"
-	stringOnlyASCIIError        = "%v,ERROR_STRING_ONLY_ASCII"
-	stringOnlyAlphanumericError = "%v,ERROR_STRING_ONLY_ALPHANUMERIC"
-	stringOnlyNumericError      = "%v,ERROR_STRING_ONLY_NUMERIC"
-	stringInError               = "%v,ERROR_STRING_IN"
-	stringNoDuplicateError      = "%v,ERROR_STRING_NO_DUPLICATE"
+	strErrorCode = "ERROR_STRING_%v"
+)
+
+const (
+	strLenErrorCode              = "LENGTH_%v"
+	strLenMinErrorCode           = "LENGTH_MIN_%v"
+	strLenMaxErrorCode           = "LENGTH_MAX_%v"
+	strLenBetweenErrorCode       = "LENGTH_BETWEEN_%v_%v"
+	strOnlyASCIIErrorCode        = "ONLY_ASCII"
+	strOnlyAlphanumericErrorCode = "ONLY_ALPHANUMERIC"
+	strOnlyNumericErrorCode      = "ONLY_NUMERIC"
+	strInErrorCode               = "IN"
+	strNoDuplicateErrorCode      = "NO_DUPLICATE"
+)
+
+const (
+	strLenErrorMessage              = "length of %v is not %v"
+	strLenMinErrorMessage           = "length of %v is smaller than %v"
+	strLenMaxErrorMessage           = "length of %v is greater than %v"
+	strLenBetweenErrorMessage       = "length of %v is not between %v and %v"
+	strOnlyASCIIErrorMessage        = "%v contains non-ASCII character(s)"
+	strOnlyAlphanumericErrorMessage = "%v contains non-alphanumeric character(s)"
+	strOnlyNumericErrorMessage      = "%v contains non-numeric character(s)"
+	strInErrorMessage               = "%v has no match in %v"
+	strNoDuplicateErrorMessage      = "%v has duplicated values"
 )
 
 // StringLen returns error if len(value)!=length, otherwise nil.
-func StringLen(field, value string, length int) error {
+func StringLen(field, value string, length int) *ErrValidation {
 	if len(value) != length {
-		return errors.New(fmt.Sprintf(stringLenError, field, length))
+		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenErrorCode, length))
+		message := fmt.Sprintf(strLenErrorMessage, field, length)
+
+		return NewError(code, message, field, value)
 	}
 
 	return nil
 }
 
 // StringLenMin returns error if len(value)<min, otherwise nil.
-func StringLenMin(field, value string, min int) error {
+func StringLenMin(field, value string, min int) *ErrValidation {
 	if len(value) < min {
-		return errors.New(fmt.Sprintf(stringLenMinError, field, min))
+		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenMinErrorCode, min))
+		message := fmt.Sprintf(strLenMinErrorMessage, field, min)
+
+		return NewError(code, message, field, value)
 	}
 
 	return nil
 }
 
 // StringLenMax returns error if len(value)>max, otherwise nil.
-func StringLenMax(field, value string, max int) error {
+func StringLenMax(field, value string, max int) *ErrValidation {
 	if len(value) > max {
-		return errors.New(fmt.Sprintf(stringLenMaxError, field, max))
+		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenMaxErrorCode, max))
+		message := fmt.Sprintf(strLenMaxErrorMessage, field, max)
+
+		return NewError(code, message, field, value)
 	}
 
 	return nil
@@ -48,9 +72,12 @@ func StringLenMax(field, value string, max int) error {
 
 // StringLenBetween returns error if len(value)<min or len(value)>max,
 // otherwise nil.
-func StringLenBetween(field, value string, min, max int) error {
+func StringLenBetween(field, value string, min, max int) *ErrValidation {
 	if len(value) < min || len(value) > max {
-		return errors.New(fmt.Sprintf(stringLenBetweenError, field, min, max))
+		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenBetweenErrorCode, min, max))
+		message := fmt.Sprintf(strLenBetweenErrorMessage, field, min, max)
+
+		return NewError(code, message, field, value)
 	}
 
 	return nil
@@ -58,10 +85,13 @@ func StringLenBetween(field, value string, min, max int) error {
 
 // StringOnlyASCII returns error if value contains non-ASCII characters, such
 // as non-ASCII unicode characters, otherwise nil.
-func StringOnlyASCII(field, value string) error {
+func StringOnlyASCII(field, value string) *ErrValidation {
 	for _, c := range value {
 		if c > unicode.MaxASCII {
-			return errors.New(fmt.Sprintf(stringOnlyASCIIError, field))
+			code := fmt.Sprintf(strErrorCode, strOnlyASCIIErrorCode)
+			message := fmt.Sprintf(strOnlyASCIIErrorMessage, field)
+
+			return NewError(code, message, field, value)
 		}
 	}
 
@@ -70,10 +100,13 @@ func StringOnlyASCII(field, value string) error {
 
 // StringOnlyAlphanumeric returns error if value contains non-alphanumeric
 // characters, such as special symbols, otherwise nil.
-func StringOnlyAlphanumeric(field, value string) error {
+func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) && !unicode.IsLetter(c) {
-			return errors.New(fmt.Sprintf(stringOnlyAlphanumericError, field))
+			code := fmt.Sprintf(strErrorCode, strOnlyAlphanumericErrorCode)
+			message := fmt.Sprintf(strOnlyAlphanumericErrorMessage, field)
+
+			return NewError(code, message, field, value)
 		}
 	}
 
@@ -81,10 +114,13 @@ func StringOnlyAlphanumeric(field, value string) error {
 }
 
 // StringOnlyNumeric returns error if value contains non-numeric characters.
-func StringOnlyNumeric(field, value string) error {
+func StringOnlyNumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) {
-			return errors.New(fmt.Sprintf(stringOnlyNumericError, field))
+			code := fmt.Sprintf(strErrorCode, strOnlyNumericErrorCode)
+			message := fmt.Sprintf(strOnlyNumericErrorMessage, field)
+
+			return NewError(code, message, field, value)
 		}
 	}
 
@@ -93,36 +129,45 @@ func StringOnlyNumeric(field, value string) error {
 
 // StringIn returns error if value has no match in values, otherwise nil.
 // Comparison is done case-sensitively.
-func StringIn(field, value string, values []string) error {
+func StringIn(field, value string, values []string) *ErrValidation {
 	for _, v := range values {
 		if v == value {
 			return nil
 		}
 	}
 
-	return errors.New(fmt.Sprintf(stringInError, field))
+	code := fmt.Sprintf(strErrorCode, strInErrorCode)
+	message := fmt.Sprintf(strInErrorMessage, field, values)
+
+	return NewError(code, message, field, value)
 }
 
 // StringInIgnoreCase returns error if value has no match in values, otherwise
 // nil. Comparison is done case-insensitively.
-func StringInIgnoreCase(field, value string, values []string) error {
+func StringInIgnoreCase(field, value string, values []string) *ErrValidation {
 	for _, v := range values {
 		if strings.ToLower(v) == strings.ToLower(value) {
 			return nil
 		}
 	}
 
-	return errors.New(fmt.Sprintf(stringInError, field))
+	code := fmt.Sprintf(strErrorCode, strInErrorCode)
+	message := fmt.Sprintf(strInErrorMessage, field, values)
+
+	return NewError(code, message, field, value)
 }
 
 // StringNoDuplicate returns error if values contain duplicated value,
 // otherwise nil. Comparison is done case-sensitively.
-func StringNoDuplicate(field string, values []string) error {
+func StringNoDuplicate(field string, values []string) *ErrValidation {
 	m := make(map[string]struct{})
 
 	for _, v := range values {
 		if _, ok := m[v]; ok {
-			return errors.New(fmt.Sprintf(stringNoDuplicateError, field))
+			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
+			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
+
+			return NewError(code, message, field, nil)
 		}
 
 		m[v] = struct{}{}
@@ -133,14 +178,17 @@ func StringNoDuplicate(field string, values []string) error {
 
 // StringNoDuplicateIgnoreCase returns error if values contain duplicated
 // value, otherwise nil. Comparison is done case-insensitively.
-func StringNoDuplicateIgnoreCase(field string, values []string) error {
+func StringNoDuplicateIgnoreCase(field string, values []string) *ErrValidation {
 	m := make(map[string]struct{})
 
 	for _, v := range values {
 		w := strings.ToLower(v)
 
 		if _, ok := m[w]; ok {
-			return errors.New(fmt.Sprintf(stringNoDuplicateError, field))
+			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
+			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
+
+			return NewError(code, message, field, nil)
 		}
 
 		m[w] = struct{}{}
