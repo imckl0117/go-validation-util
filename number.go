@@ -11,10 +11,10 @@ const (
 )
 
 const (
-	numMinErrorCode     = "MIN_%v"
-	numMaxErrorCode     = "MAX_%v"
-	numBetweenErrorCode = "BETWEEN_%v_%v"
-	numFormatErrorCode  = "FORMAT_%v"
+	numMinErrorCode     = "MIN"
+	numMaxErrorCode     = "MAX"
+	numBetweenErrorCode = "BETWEEN"
+	numFormatErrorCode  = "FORMAT"
 )
 
 const (
@@ -27,7 +27,8 @@ const (
 // NumberMin returns error if value<min. NumberMin panics if value and min have
 // different types.
 func NumberMin(field string, value, min interface{}) *ErrValidation {
-	code := fmt.Sprintf(numErrorCode, fmt.Sprintf(numMinErrorCode, min))
+	args := []interface{}{min}
+	code := fmt.Sprintf(numErrorCode, numMinErrorCode)
 	message := fmt.Sprintf(numMinErrorMessage, field, min)
 
 	switch value.(type) {
@@ -41,7 +42,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int8:
 		v1 := value.(int8)
@@ -53,7 +54,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int16:
 		v1 := value.(int16)
@@ -65,7 +66,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int32:
 		v1 := value.(int32)
@@ -77,7 +78,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int64:
 		v1 := value.(int64)
@@ -89,7 +90,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint:
 		v1 := value.(uint)
@@ -101,7 +102,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint8:
 		v1 := value.(uint8)
@@ -113,7 +114,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint16:
 		v1 := value.(uint16)
@@ -125,7 +126,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint32:
 		v1 := value.(uint32)
@@ -137,7 +138,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint64:
 		v1 := value.(uint64)
@@ -149,7 +150,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float32:
 		v1 := value.(float32)
@@ -161,7 +162,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float64:
 		v1 := value.(float64)
@@ -173,7 +174,7 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	default:
 		panic("value must be a number")
@@ -185,7 +186,8 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 // NumberMax returns error if value>max. NumberMax panics if value and max have
 // different types.
 func NumberMax(field string, value, max interface{}) *ErrValidation {
-	code := fmt.Sprintf(numErrorCode, fmt.Sprintf(numMaxErrorCode, max))
+	args := []interface{}{max}
+	code := fmt.Sprintf(numErrorCode, numMaxErrorCode)
 	message := fmt.Sprintf(numMaxErrorMessage, field, max)
 
 	switch value.(type) {
@@ -199,7 +201,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int8:
 		v1 := value.(int8)
@@ -211,7 +213,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int16:
 		v1 := value.(int16)
@@ -223,7 +225,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int32:
 		v1 := value.(int32)
@@ -235,7 +237,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int64:
 		v1 := value.(int64)
@@ -247,7 +249,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint:
 		v1 := value.(uint)
@@ -259,7 +261,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint8:
 		v1 := value.(uint8)
@@ -271,7 +273,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint16:
 		v1 := value.(uint16)
@@ -283,7 +285,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint32:
 		v1 := value.(uint32)
@@ -295,7 +297,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint64:
 		v1 := value.(uint64)
@@ -307,7 +309,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float32:
 		v1 := value.(float32)
@@ -319,7 +321,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float64:
 		v1 := value.(float64)
@@ -331,7 +333,7 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	default:
 		panic("value must be a number")
@@ -343,7 +345,8 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 // NumberBetween returns error if value<min or value>max. NumberBetween panics
 // if value, min, and max have different types.
 func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
-	code := fmt.Sprintf(numErrorCode, fmt.Sprintf(numBetweenErrorCode, min, max))
+	args := []interface{}{min, max}
+	code := fmt.Sprintf(numErrorCode, numBetweenErrorCode)
 	message := fmt.Sprintf(numBetweenErrorMessage, field, min, max)
 
 	switch value.(type) {
@@ -363,7 +366,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int8:
 		v1 := value.(int8)
@@ -381,7 +384,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int16:
 		v1 := value.(int16)
@@ -399,7 +402,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int32:
 		v1 := value.(int32)
@@ -417,7 +420,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case int64:
 		v1 := value.(int64)
@@ -435,7 +438,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint:
 		v1 := value.(uint)
@@ -453,7 +456,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint8:
 		v1 := value.(uint8)
@@ -471,7 +474,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint16:
 		v1 := value.(uint16)
@@ -489,7 +492,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint32:
 		v1 := value.(uint32)
@@ -507,7 +510,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case uint64:
 		v1 := value.(uint64)
@@ -525,7 +528,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float32:
 		v1 := value.(float32)
@@ -543,7 +546,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	case float64:
 		v1 := value.(float64)
@@ -561,7 +564,7 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 		}
 
 		if v1 < v2 || v1 > v3 {
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	default:
 		panic("value must be a number")
@@ -573,7 +576,8 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 // NumberFormat checks if value has l decimal places, where m<=l<=n, m,n from
 // format.
 func NumberFormat(field string, value float64, format string) *ErrValidation {
-	code := fmt.Sprintf(numErrorCode, fmt.Sprintf(numFormatErrorCode, format))
+	args := []interface{}{format}
+	code := fmt.Sprintf(numErrorCode, numFormatErrorCode)
 	message := fmt.Sprintf(numFormatErrorMessage, field, format)
 
 	f := strings.Split(strings.TrimSpace(format), ",")
@@ -604,13 +608,13 @@ func NumberFormat(field string, value float64, format string) *ErrValidation {
 			return nil
 		}
 
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	l := int64(len(vs[1]))
 
 	if l < m || l > n {
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	return nil

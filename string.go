@@ -11,10 +11,10 @@ const (
 )
 
 const (
-	strLenErrorCode              = "LENGTH_%v"
-	strLenMinErrorCode           = "LENGTH_MIN_%v"
-	strLenMaxErrorCode           = "LENGTH_MAX_%v"
-	strLenBetweenErrorCode       = "LENGTH_BETWEEN_%v_%v"
+	strLenErrorCode              = "LENGTH"
+	strLenMinErrorCode           = "LENGTH_MIN"
+	strLenMaxErrorCode           = "LENGTH_MAX"
+	strLenBetweenErrorCode       = "LENGTH_BETWEEN"
 	strOnlyASCIIErrorCode        = "ONLY_ASCII"
 	strOnlyAlphanumericErrorCode = "ONLY_ALPHANUMERIC"
 	strOnlyNumericErrorCode      = "ONLY_NUMERIC"
@@ -37,10 +37,11 @@ const (
 // StringLen returns error if len(value)!=length, otherwise nil.
 func StringLen(field, value string, length int) *ErrValidation {
 	if len(value) != length {
-		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenErrorCode, length))
+		args := []interface{}{length}
+		code := fmt.Sprintf(strErrorCode, strLenErrorCode)
 		message := fmt.Sprintf(strLenErrorMessage, field, length)
 
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	return nil
@@ -49,10 +50,11 @@ func StringLen(field, value string, length int) *ErrValidation {
 // StringLenMin returns error if len(value)<min, otherwise nil.
 func StringLenMin(field, value string, min int) *ErrValidation {
 	if len(value) < min {
-		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenMinErrorCode, min))
+		args := []interface{}{min}
+		code := fmt.Sprintf(strErrorCode, strLenMinErrorCode)
 		message := fmt.Sprintf(strLenMinErrorMessage, field, min)
 
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	return nil
@@ -61,10 +63,11 @@ func StringLenMin(field, value string, min int) *ErrValidation {
 // StringLenMax returns error if len(value)>max, otherwise nil.
 func StringLenMax(field, value string, max int) *ErrValidation {
 	if len(value) > max {
-		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenMaxErrorCode, max))
+		args := []interface{}{max}
+		code := fmt.Sprintf(strErrorCode, strLenMaxErrorCode)
 		message := fmt.Sprintf(strLenMaxErrorMessage, field, max)
 
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	return nil
@@ -74,10 +77,11 @@ func StringLenMax(field, value string, max int) *ErrValidation {
 // otherwise nil.
 func StringLenBetween(field, value string, min, max int) *ErrValidation {
 	if len(value) < min || len(value) > max {
-		code := fmt.Sprintf(strErrorCode, fmt.Sprintf(strLenBetweenErrorCode, min, max))
+		args := []interface{}{min, max}
+		code := fmt.Sprintf(strErrorCode, strLenBetweenErrorCode)
 		message := fmt.Sprintf(strLenBetweenErrorMessage, field, min, max)
 
-		return NewError(code, message, field, value)
+		return NewError(code, args, message, field, value)
 	}
 
 	return nil
@@ -88,10 +92,11 @@ func StringLenBetween(field, value string, min, max int) *ErrValidation {
 func StringOnlyASCII(field, value string) *ErrValidation {
 	for _, c := range value {
 		if c > unicode.MaxASCII {
+			args := []interface{}{}
 			code := fmt.Sprintf(strErrorCode, strOnlyASCIIErrorCode)
 			message := fmt.Sprintf(strOnlyASCIIErrorMessage, field)
 
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	}
 
@@ -103,10 +108,11 @@ func StringOnlyASCII(field, value string) *ErrValidation {
 func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) && !unicode.IsLetter(c) {
+			args := []interface{}{}
 			code := fmt.Sprintf(strErrorCode, strOnlyAlphanumericErrorCode)
 			message := fmt.Sprintf(strOnlyAlphanumericErrorMessage, field)
 
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	}
 
@@ -117,10 +123,11 @@ func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 func StringOnlyNumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) {
+			args := []interface{}{}
 			code := fmt.Sprintf(strErrorCode, strOnlyNumericErrorCode)
 			message := fmt.Sprintf(strOnlyNumericErrorMessage, field)
 
-			return NewError(code, message, field, value)
+			return NewError(code, args, message, field, value)
 		}
 	}
 
@@ -136,10 +143,11 @@ func StringIn(field, value string, values []string) *ErrValidation {
 		}
 	}
 
+	args := []interface{}{}
 	code := fmt.Sprintf(strErrorCode, strInErrorCode)
 	message := fmt.Sprintf(strInErrorMessage, field, values)
 
-	return NewError(code, message, field, value)
+	return NewError(code, args, message, field, value)
 }
 
 // StringInIgnoreCase returns error if value has no match in values, otherwise
@@ -151,10 +159,11 @@ func StringInIgnoreCase(field, value string, values []string) *ErrValidation {
 		}
 	}
 
+	args := []interface{}{}
 	code := fmt.Sprintf(strErrorCode, strInErrorCode)
 	message := fmt.Sprintf(strInErrorMessage, field, values)
 
-	return NewError(code, message, field, value)
+	return NewError(code, args, message, field, value)
 }
 
 // StringNoDuplicate returns error if values contain duplicated value,
@@ -164,10 +173,11 @@ func StringNoDuplicate(field string, values []string) *ErrValidation {
 
 	for _, v := range values {
 		if _, ok := m[v]; ok {
+			args := []interface{}{}
 			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
 			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
 
-			return NewError(code, message, field, nil)
+			return NewError(code, args, message, field, nil)
 		}
 
 		m[v] = struct{}{}
@@ -185,10 +195,11 @@ func StringNoDuplicateIgnoreCase(field string, values []string) *ErrValidation {
 		w := strings.ToLower(v)
 
 		if _, ok := m[w]; ok {
+			args := []interface{}{}
 			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
 			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
 
-			return NewError(code, message, field, nil)
+			return NewError(code, args, message, field, nil)
 		}
 
 		m[w] = struct{}{}

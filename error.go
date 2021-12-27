@@ -9,6 +9,7 @@ import "fmt"
 // ErrValidation is the custom error returned by the Number* and String* family
 // of functions.
 type ErrValidation struct {
+	Args    []interface{}
 	Code    string
 	Field   string
 	Message string
@@ -24,6 +25,6 @@ func (err *ErrValidation) Error() string {
 }
 
 // NewError creates ErrValidation from code, message, field and value provided.
-func NewError(code, message, field string, value interface{}) *ErrValidation {
-	return &ErrValidation{code, field, message, value}
+func NewError(code string, args []interface{}, message string, field string, value interface{}) *ErrValidation {
+	return &ErrValidation{args, code, field, message, value}
 }
