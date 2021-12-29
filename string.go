@@ -37,7 +37,11 @@ const (
 // StringLen returns error if len(value)!=length, otherwise nil.
 func StringLen(field, value string, length int) *ErrValidation {
 	if len(value) != length {
-		args := []interface{}{length}
+		args := struct {
+			Length int
+		}{
+			length,
+		}
 		code := fmt.Sprintf(strErrorCode, strLenErrorCode)
 		message := fmt.Sprintf(strLenErrorMessage, field, length)
 
@@ -50,7 +54,11 @@ func StringLen(field, value string, length int) *ErrValidation {
 // StringLenMin returns error if len(value)<min, otherwise nil.
 func StringLenMin(field, value string, min int) *ErrValidation {
 	if len(value) < min {
-		args := []interface{}{min}
+		args := struct {
+			Min int
+		}{
+			min,
+		}
 		code := fmt.Sprintf(strErrorCode, strLenMinErrorCode)
 		message := fmt.Sprintf(strLenMinErrorMessage, field, min)
 
@@ -63,7 +71,11 @@ func StringLenMin(field, value string, min int) *ErrValidation {
 // StringLenMax returns error if len(value)>max, otherwise nil.
 func StringLenMax(field, value string, max int) *ErrValidation {
 	if len(value) > max {
-		args := []interface{}{max}
+		args := struct {
+			Max int
+		}{
+			max,
+		}
 		code := fmt.Sprintf(strErrorCode, strLenMaxErrorCode)
 		message := fmt.Sprintf(strLenMaxErrorMessage, field, max)
 
@@ -77,7 +89,11 @@ func StringLenMax(field, value string, max int) *ErrValidation {
 // otherwise nil.
 func StringLenBetween(field, value string, min, max int) *ErrValidation {
 	if len(value) < min || len(value) > max {
-		args := []interface{}{min, max}
+		args := struct {
+			Min, Max int
+		}{
+			min, max,
+		}
 		code := fmt.Sprintf(strErrorCode, strLenBetweenErrorCode)
 		message := fmt.Sprintf(strLenBetweenErrorMessage, field, min, max)
 
@@ -92,7 +108,11 @@ func StringLenBetween(field, value string, min, max int) *ErrValidation {
 func StringOnlyASCII(field, value string) *ErrValidation {
 	for _, c := range value {
 		if c > unicode.MaxASCII {
-			args := []interface{}{}
+			args := struct {
+				Char rune
+			}{
+				c,
+			}
 			code := fmt.Sprintf(strErrorCode, strOnlyASCIIErrorCode)
 			message := fmt.Sprintf(strOnlyASCIIErrorMessage, field)
 
@@ -108,7 +128,11 @@ func StringOnlyASCII(field, value string) *ErrValidation {
 func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) && !unicode.IsLetter(c) {
-			args := []interface{}{}
+			args := struct {
+				Char rune
+			}{
+				c,
+			}
 			code := fmt.Sprintf(strErrorCode, strOnlyAlphanumericErrorCode)
 			message := fmt.Sprintf(strOnlyAlphanumericErrorMessage, field)
 
@@ -123,7 +147,11 @@ func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 func StringOnlyNumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) {
-			args := []interface{}{}
+			args := struct {
+				Char rune
+			}{
+				c,
+			}
 			code := fmt.Sprintf(strErrorCode, strOnlyNumericErrorCode)
 			message := fmt.Sprintf(strOnlyNumericErrorMessage, field)
 
@@ -143,7 +171,7 @@ func StringIn(field, value string, values []string) *ErrValidation {
 		}
 	}
 
-	args := []interface{}{}
+	args := struct{}{}
 	code := fmt.Sprintf(strErrorCode, strInErrorCode)
 	message := fmt.Sprintf(strInErrorMessage, field, values)
 
@@ -159,7 +187,7 @@ func StringInIgnoreCase(field, value string, values []string) *ErrValidation {
 		}
 	}
 
-	args := []interface{}{}
+	args := struct{}{}
 	code := fmt.Sprintf(strErrorCode, strInErrorCode)
 	message := fmt.Sprintf(strInErrorMessage, field, values)
 
@@ -173,7 +201,11 @@ func StringNoDuplicate(field string, values []string) *ErrValidation {
 
 	for _, v := range values {
 		if _, ok := m[v]; ok {
-			args := []interface{}{}
+			args := struct {
+				Found string
+			}{
+				v,
+			}
 			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
 			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
 
@@ -195,7 +227,11 @@ func StringNoDuplicateIgnoreCase(field string, values []string) *ErrValidation {
 		w := strings.ToLower(v)
 
 		if _, ok := m[w]; ok {
-			args := []interface{}{}
+			args := struct {
+				Found string
+			}{
+				v,
+			}
 			code := fmt.Sprintf(strErrorCode, strNoDuplicateErrorCode)
 			message := fmt.Sprintf(strNoDuplicateErrorMessage, field)
 

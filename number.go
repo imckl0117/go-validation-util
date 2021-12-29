@@ -27,7 +27,6 @@ const (
 // NumberMin returns error if value<min. NumberMin panics if value and min have
 // different types.
 func NumberMin(field string, value, min interface{}) *ErrValidation {
-	args := []interface{}{min}
 	code := fmt.Sprintf(numErrorCode, numMinErrorCode)
 	message := fmt.Sprintf(numMinErrorMessage, field, min)
 
@@ -39,6 +38,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min int
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -53,6 +58,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min int8
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -63,6 +74,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min int16
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -77,6 +94,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min int32
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -87,6 +110,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min int64
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -101,6 +130,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min uint
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -111,6 +146,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min uint8
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -125,6 +166,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min uint16
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -135,6 +182,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min uint32
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -149,6 +202,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min uint64
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -161,6 +220,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 			panic("value and min must have the same type")
 		}
 
+		args := struct {
+			Min float32
+		}{
+			v2,
+		}
+
 		if v1 < v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -171,6 +236,12 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and min must have the same type")
+		}
+
+		args := struct {
+			Min float64
+		}{
+			v2,
 		}
 
 		if v1 < v2 {
@@ -186,7 +257,6 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 // NumberMax returns error if value>max. NumberMax panics if value and max have
 // different types.
 func NumberMax(field string, value, max interface{}) *ErrValidation {
-	args := []interface{}{max}
 	code := fmt.Sprintf(numErrorCode, numMaxErrorCode)
 	message := fmt.Sprintf(numMaxErrorMessage, field, max)
 
@@ -198,6 +268,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max int
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -212,6 +288,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max int8
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -222,6 +304,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max int16
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -236,6 +324,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max int32
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -246,6 +340,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max int64
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -260,6 +360,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max uint
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -270,6 +376,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max uint8
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -284,6 +396,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max uint16
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -294,6 +412,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max uint32
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -308,6 +432,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max uint64
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -320,6 +450,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 			panic("value and max must have the same type")
 		}
 
+		args := struct {
+			Max float32
+		}{
+			v2,
+		}
+
 		if v1 > v2 {
 			return NewError(code, args, message, field, value)
 		}
@@ -330,6 +466,12 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value and max must have the same type")
+		}
+
+		args := struct {
+			Max float64
+		}{
+			v2,
 		}
 
 		if v1 > v2 {
@@ -345,7 +487,6 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 // NumberBetween returns error if value<min or value>max. NumberBetween panics
 // if value, min, and max have different types.
 func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
-	args := []interface{}{min, max}
 	code := fmt.Sprintf(numErrorCode, numBetweenErrorCode)
 	message := fmt.Sprintf(numBetweenErrorMessage, field, min, max)
 
@@ -363,6 +504,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max int
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -383,6 +530,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max int8
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -399,6 +552,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max int16
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -419,6 +578,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max int32
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -435,6 +600,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max int64
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -455,6 +626,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max uint
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -471,6 +648,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max uint8
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -491,6 +674,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max uint16
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -507,6 +696,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max uint32
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -527,6 +722,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max uint64
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -543,6 +744,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 
 		if !ok {
 			panic("value, min and max must have the same type")
+		}
+
+		args := struct {
+			Min, Max float32
+		}{
+			v2, v3,
 		}
 
 		if v1 < v2 || v1 > v3 {
@@ -563,6 +770,12 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 			panic("value, min and max must have the same type")
 		}
 
+		args := struct {
+			Min, Max float64
+		}{
+			v2, v3,
+		}
+
 		if v1 < v2 || v1 > v3 {
 			return NewError(code, args, message, field, value)
 		}
@@ -576,7 +789,11 @@ func NumberBetween(field string, value, min, max interface{}) *ErrValidation {
 // NumberFormat checks if value has l decimal places, where m<=l<=n, m,n from
 // format.
 func NumberFormat(field string, value float64, format string) *ErrValidation {
-	args := []interface{}{format}
+	args := struct {
+		Format string
+	}{
+		format,
+	}
 	code := fmt.Sprintf(numErrorCode, numFormatErrorCode)
 	message := fmt.Sprintf(numFormatErrorMessage, field, format)
 
