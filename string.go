@@ -11,6 +11,7 @@ const (
 )
 
 const (
+	strNotEmptyErrorCode         = "NOT_EMPTY"
 	strLenErrorCode              = "LENGTH"
 	strLenMinErrorCode           = "LENGTH_MIN"
 	strLenMaxErrorCode           = "LENGTH_MAX"
@@ -23,6 +24,7 @@ const (
 )
 
 const (
+	strNotEmptyErrorMessage         = "%v is empty"
 	strLenErrorMessage              = "length of %v is not %v"
 	strLenMinErrorMessage           = "length of %v is smaller than %v"
 	strLenMaxErrorMessage           = "length of %v is greater than %v"
@@ -33,6 +35,33 @@ const (
 	strInErrorMessage               = "%v has no match in %v"
 	strNoDuplicateErrorMessage      = "%v has duplicated values"
 )
+
+// StringNotEmpty returns error if value=="", otherwise nil.
+func StringNotEmpty(field, value string) *ErrValidation {
+	if value == "" {
+		args := struct{}{}
+		code := fmt.Sprintf(strErrorCode, strNotEmptyErrorCode)
+		message := fmt.Sprintf(strNotEmptyErrorMessage, field)
+
+		return NewError(code, args, message, field, value)
+	}
+
+	return nil
+}
+
+// StringNotEmptyIgnoreSpace returns error if value=="" after being trimmed,
+// otherwise nil.
+func StringNotEmptyIgnoreSpace(field, value string) *ErrValidation {
+	if strings.TrimSpace(value) == "" {
+		args := struct{}{}
+		code := fmt.Sprintf(strErrorCode, strNotEmptyErrorCode)
+		message := fmt.Sprintf(strNotEmptyErrorMessage, field)
+
+		return NewError(code, args, message, field, value)
+	}
+
+	return nil
+}
 
 // StringLen returns error if len(value)!=length, otherwise nil.
 func StringLen(field, value string, length int) *ErrValidation {

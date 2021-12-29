@@ -11,17 +11,23 @@ const (
 )
 
 const (
-	numMinErrorCode     = "MIN"
-	numMaxErrorCode     = "MAX"
-	numBetweenErrorCode = "BETWEEN"
-	numFormatErrorCode  = "FORMAT"
+	numMinErrorCode         = "MIN"
+	numGreaterThanErrorCode = "GREATER_THAN"
+	numMaxErrorCode         = "MAX"
+	numSmallerThanErrorCode = "SMALLER_THAN"
+	numBetweenErrorCode     = "BETWEEN"
+	numFormatErrorCode      = "FORMAT"
+	numNoDecimalErrorCode   = "NO_DECIMAL"
 )
 
 const (
-	numMinErrorMessage     = "%v is smaller than %v"
-	numMaxErrorMessage     = "%v is greater than %v"
-	numBetweenErrorMessage = "%v is not between %v and %v"
-	numFormatErrorMessage  = "%v does not conform with the format %v"
+	numMinErrorMessage         = "%v is smaller than %v"
+	numGreaterThanErrorMessage = "%v is not greater than %v"
+	numMaxErrorMessage         = "%v is greater than %v"
+	errorSmallerThanErrorMessage = "%v is not smaller than %v"
+	numBetweenErrorMessage     = "%v is not between %v and %v"
+	numFormatErrorMessage      = "%v does not conform with the format %v"
+	numNoDecimalErrorMessage   = "%v has unexpected decimal places"
 )
 
 // NumberMin returns error if value<min. NumberMin panics if value and min have
@@ -254,6 +260,236 @@ func NumberMin(field string, value, min interface{}) *ErrValidation {
 	return nil
 }
 
+// NumberGreaterThan returns error if value<=n. NumberGreaterThan panics if
+// value and n have different types.
+func NumberGreaterThan(field string, value, n interface{}) *ErrValidation {
+	code := fmt.Sprintf(numErrorCode, numGreaterThanErrorCode)
+	message := fmt.Sprintf(numGreaterThanErrorMessage, field, n)
+
+	switch value.(type) {
+	case int:
+		v1 := value.(int)
+
+		v2, ok := n.(int)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int8:
+		v1 := value.(int8)
+
+		v2, ok := n.(int8)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int8
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int16:
+		v1 := value.(int16)
+
+		v2, ok := n.(int16)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int16
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int32:
+		v1 := value.(int32)
+
+		v2, ok := n.(int32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int32
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int64:
+		v1 := value.(int64)
+
+		v2, ok := n.(int64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int64
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint:
+		v1 := value.(uint)
+
+		v2, ok := n.(uint)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint8:
+		v1 := value.(uint8)
+
+		v2, ok := n.(uint8)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint8
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint16:
+		v1 := value.(uint16)
+
+		v2, ok := n.(uint16)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint16
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint32:
+		v1 := value.(uint32)
+
+		v2, ok := n.(uint32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint32
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint64:
+		v1 := value.(uint64)
+
+		v2, ok := n.(uint64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint64
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case float32:
+		v1 := value.(float32)
+
+		v2, ok := n.(float32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N float32
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case float64:
+		v1 := value.(float64)
+
+		v2, ok := n.(float64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N float64
+		}{
+			v2,
+		}
+
+		if v1 <= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	default:
+		panic("value must be a number")
+	}
+
+	return nil
+}
+
 // NumberMax returns error if value>max. NumberMax panics if value and max have
 // different types.
 func NumberMax(field string, value, max interface{}) *ErrValidation {
@@ -475,6 +711,236 @@ func NumberMax(field string, value, max interface{}) *ErrValidation {
 		}
 
 		if v1 > v2 {
+			return NewError(code, args, message, field, value)
+		}
+	default:
+		panic("value must be a number")
+	}
+
+	return nil
+}
+
+// NumberSmallerThan returns error if value>=n. NumberSmallerThan panics if value and
+// n have different types.
+func NumberSmallerThan(field string, value, n interface{}) *ErrValidation {
+	code := fmt.Sprintf(numErrorCode, numSmallerThanErrorCode)
+	message := fmt.Sprintf(errorSmallerThanErrorMessage, field, n)
+
+	switch value.(type) {
+	case int:
+		v1 := value.(int)
+
+		v2, ok := n.(int)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int8:
+		v1 := value.(int8)
+
+		v2, ok := n.(int8)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int8
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int16:
+		v1 := value.(int16)
+
+		v2, ok := n.(int16)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int16
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int32:
+		v1 := value.(int32)
+
+		v2, ok := n.(int32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int32
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case int64:
+		v1 := value.(int64)
+
+		v2, ok := n.(int64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N int64
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint:
+		v1 := value.(uint)
+
+		v2, ok := n.(uint)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint8:
+		v1 := value.(uint8)
+
+		v2, ok := n.(uint8)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint8
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint16:
+		v1 := value.(uint16)
+
+		v2, ok := n.(uint16)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint16
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint32:
+		v1 := value.(uint32)
+
+		v2, ok := n.(uint32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint32
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case uint64:
+		v1 := value.(uint64)
+
+		v2, ok := n.(uint64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N uint64
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case float32:
+		v1 := value.(float32)
+
+		v2, ok := n.(float32)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N float32
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
+			return NewError(code, args, message, field, value)
+		}
+	case float64:
+		v1 := value.(float64)
+
+		v2, ok := n.(float64)
+
+		if !ok {
+			panic("value and n must have the same type")
+		}
+
+		args := struct {
+			N float64
+		}{
+			v2,
+		}
+
+		if v1 >= v2 {
 			return NewError(code, args, message, field, value)
 		}
 	default:
@@ -831,6 +1297,11 @@ func NumberFormat(field string, value float64, format string) *ErrValidation {
 	l := int64(len(vs[1]))
 
 	if l < m || l > n {
+		if m == 0 && n == 0 {
+			code = fmt.Sprintf(numErrorCode, numNoDecimalErrorCode)
+			message = fmt.Sprintf(numNoDecimalErrorMessage, field)
+		}
+
 		return NewError(code, args, message, field, value)
 	}
 
