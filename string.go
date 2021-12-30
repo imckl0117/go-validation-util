@@ -138,9 +138,9 @@ func StringOnlyASCII(field, value string) *ErrValidation {
 	for _, c := range value {
 		if c > unicode.MaxASCII {
 			args := struct {
-				Char rune
+				Char string
 			}{
-				c,
+				string(c),
 			}
 			code := fmt.Sprintf(strErrorCode, strOnlyASCIIErrorCode)
 			message := fmt.Sprintf(strOnlyASCIIErrorMessage, field)
@@ -158,9 +158,9 @@ func StringOnlyAlphanumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) && !unicode.IsLetter(c) {
 			args := struct {
-				Char rune
+				Char string
 			}{
-				c,
+				string(c),
 			}
 			code := fmt.Sprintf(strErrorCode, strOnlyAlphanumericErrorCode)
 			message := fmt.Sprintf(strOnlyAlphanumericErrorMessage, field)
@@ -177,9 +177,9 @@ func StringOnlyNumeric(field, value string) *ErrValidation {
 	for _, c := range value {
 		if !unicode.IsDigit(c) {
 			args := struct {
-				Char rune
+				Char string
 			}{
-				c,
+				string(c),
 			}
 			code := fmt.Sprintf(strErrorCode, strOnlyNumericErrorCode)
 			message := fmt.Sprintf(strOnlyNumericErrorMessage, field)
