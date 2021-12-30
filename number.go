@@ -2,6 +2,7 @@ package validation
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -11,6 +12,7 @@ const (
 )
 
 const (
+	numNotANumberErrorCode  = "NOT_A_NUMBER"
 	numMinErrorCode         = "MIN"
 	numGreaterThanErrorCode = "GREATER_THAN"
 	numMaxErrorCode         = "MAX"
@@ -21,14 +23,28 @@ const (
 )
 
 const (
-	numMinErrorMessage         = "%v is smaller than %v"
-	numGreaterThanErrorMessage = "%v is not greater than %v"
-	numMaxErrorMessage         = "%v is greater than %v"
+	numNotANumberErrorMessage    = "%v is not a number"
+	numMinErrorMessage           = "%v is smaller than %v"
+	numGreaterThanErrorMessage   = "%v is not greater than %v"
+	numMaxErrorMessage           = "%v is greater than %v"
 	errorSmallerThanErrorMessage = "%v is not smaller than %v"
-	numBetweenErrorMessage     = "%v is not between %v and %v"
-	numFormatErrorMessage      = "%v does not conform with the format %v"
-	numNoDecimalErrorMessage   = "%v has unexpected decimal places"
+	numBetweenErrorMessage       = "%v is not between %v and %v"
+	numFormatErrorMessage        = "%v does not conform with the format %v"
+	numNoDecimalErrorMessage     = "%v has unexpected decimal places"
 )
+
+// NumberNotANumber returns error if value is NaN, otherwise nil.
+func NumberNotANumber(field string, value float64) *ErrValidation {
+	if math.IsNaN(value) {
+		args := struct{}{}
+		code := fmt.Sprintf(numErrorCode, numNotANumberErrorCode)
+		message := fmt.Sprintf(numNotANumberErrorMessage, field)
+
+		return NewError(code, args, message, field, value)
+	}
+
+	return nil
+}
 
 // NumberMin returns error if value<min. NumberMin panics if value and min have
 // different types.
